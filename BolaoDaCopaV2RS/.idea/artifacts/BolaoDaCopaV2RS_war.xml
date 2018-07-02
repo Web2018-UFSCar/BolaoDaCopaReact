@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="BolaoDaCopaV2RS:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="BolaoDaCopaV2RS.war">
+      <element id="artifact" artifact-name="BolaoDaCopaV2RS:war exploded" />
+    </root>
+  </artifact>
+</component>
