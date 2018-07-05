@@ -24,9 +24,10 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(ServicosUsuario.class);
-        resources.add(ServicosPalpite.class);
-        resources.add(CorsResponseFilter.class);
+        resources.add(br.ufscar.dc.BolaoDaCopaV2RS.servicos.CorsResponseFilter.class);
+        resources.add(br.ufscar.dc.BolaoDaCopaV2RS.servicos.ServicosPais.class);
+        resources.add(br.ufscar.dc.BolaoDaCopaV2RS.servicos.ServicosPalpite.class);
+        resources.add(br.ufscar.dc.BolaoDaCopaV2RS.servicos.ServicosUsuario.class);
     }
 
 }
