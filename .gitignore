@@ -1,0 +1,8 @@
+# Netbeans
+nb-configuration.xml
+
+# IntelliJ
+.idea/
+
+# Java
+*.class
