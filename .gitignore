@@ -2,7 +2,11 @@
 nb-configuration.xml
 
 # IntelliJ
-.idea/
+*/.idea/
 
 # Java
 *.class
+
+*/target/
+*/lib/
+*.iml
