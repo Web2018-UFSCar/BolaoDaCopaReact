@@ -1,5 +1,8 @@
 import React from 'react';
 import NovoPalpiteMaquinaEstados from './NovoPalpiteMaquinaEstados';
+// Import do component do select dinamico
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 
 class PalpiteForm extends React.Component {
@@ -28,8 +31,20 @@ class PalpiteForm extends React.Component {
                 campeao: '',
                 vice: '',
                 confirmarSenha: '',
-            },            
+            },
+            paises: null // ira guardar os paises recuperados do backend
         };
+    }
+
+    async componentDidMount() {
+        // Recupera a lista de paises
+        const responsePalpites = await fetch('http://localhost:8080/BolaoDaCopaV2RS/webresources/pais');
+        var contentTypePalpites = responsePalpites.headers.get("content-type");
+        if (contentTypePalpites && contentTypePalpites.includes("application/json")) {
+            const paisesJson = await responsePalpites.json();
+            // Necessário o formato {value, label} para o component Select
+            this.setState({ paises: paisesJson.map(pais => { return { value: pais.nome, label: pais.nome } }) });
+        }
     }
 
     handleUserInput(e) {
@@ -43,11 +58,23 @@ class PalpiteForm extends React.Component {
         });
     }
 
-    validarCampo({ nome, valor = null }) {
+    // Devido ao comportamento diferente do Select
+    // chamamos esse método para lidar com a mudança de valor
+    handleSelectChange(nome, e) {
+        const valor = e != null ? e.value : ''; // null = evento de deleção do valor
+
+        const mensagensValidacao = Object.assign({}, this.state.mensagensValidacao);
+        mensagensValidacao[nome] = this.validarCampo({ nome, valor });
+        this.setState({
+            [nome]: valor,
+            mensagensValidacao,
+        });
+    }
+
+    validarCampo({ nome, valor = null }) {        
         if (valor === null) {
             valor = this.state[nome];
         }
-
 
         if (nome === 'email') {
             if (!/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(valor)) {
@@ -82,7 +109,7 @@ class PalpiteForm extends React.Component {
             }
         }
         return '';
-    }    
+    }
 
 
     validarFormulario() {
@@ -250,7 +277,7 @@ class PalpiteForm extends React.Component {
                                     label="E-mail"
                                     value={this.state.email}
                                     onChange={(event) => this.handleUserInput(event)}
-                                    onBlur={() => this.handleEmailChanged()}/>
+                                    onBlur={() => this.handleEmailChanged()} />
                                 <span className="text text-danger">{this.state.mensagensValidacao['email']}</span>
                             </div>
                             <label className="col-sm-2 control-label" htmlFor="senha">Senha</label>
@@ -262,7 +289,7 @@ class PalpiteForm extends React.Component {
                                     disabled={this.state.estado.campoSenhaDesabilitado}
                                     value={this.state.senha}
                                     onChange={(event) => this.handleUserInput(event)}
-                                    onBlur={() => this.handleSenhaChanged()}/>
+                                    onBlur={() => this.handleSenhaChanged()} />
                                 <span className="text text-danger">{this.state.mensagensValidacao['senha']}</span>
                             </div>
                         </div>
@@ -306,14 +333,15 @@ class PalpiteForm extends React.Component {
                         <div className={this.state.estado.camposDadosPalpiteDestaque ? 'form-group has-success' : 'form-group'}>
                             <label className="col-sm-2 control-label" htmlFor="campeao">Campeão</label>
                             <div className="col-sm-4">
-                                <input type="text"
-                                    className="form-control"
-                                    name="campeao"
+                                <Select
                                     label="Campeão"
-                                    disabled={this.state.estado.camposDadosPalpiteDesabilitados}
+                                    name="campeao"
                                     value={this.state.campeao}
-                                    onChange={(event) => this.handleUserInput(event)} />
+                                    disabled={this.state.estado.camposDadosPalpiteDesabilitados}
+                                    onChange={(event) => this.handleSelectChange('campeao', event)}
+                                    options={this.state.paises}/>
                             </div>
+
                             {this.state.estado.campoConfirmacaoSenhaVisivel && (
                                 <label className="col-sm-2 control-label" htmlFor="confirmarSenha">Confirme a senha</label>
                             )}
@@ -332,14 +360,15 @@ class PalpiteForm extends React.Component {
                         <div className={this.state.estado.camposDadosPalpiteDestaque ? 'form-group has-success' : 'form-group'}>
                             <label className="col-sm-2 control-label" htmlFor="vice">Vice</label>
                             <div className="col-sm-4">
-                                <input type="text"
-                                    className="form-control"
-                                    name="vice"
+                                <Select
                                     label="Vice"
-                                    disabled={this.state.estado.camposDadosPalpiteDesabilitados}
+                                    name="vice"
                                     value={this.state.vice}
-                                    onChange={(event) => this.handleUserInput(event)} />
+                                    disabled={this.state.estado.camposDadosPalpiteDesabilitados}
+                                    onChange={(event) => this.handleSelectChange('vice', event)}
+                                    options={this.state.paises}/>
                             </div>
+                            
                             <div className="col-sm-6">
                                 {this.state.estado.botaoConfirmarPalpiteVisivel && (
                                     <a type="submit"

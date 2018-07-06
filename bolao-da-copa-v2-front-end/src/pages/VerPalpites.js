@@ -9,13 +9,12 @@ import { Dropdown } from 'primereact/components/dropdown/Dropdown';
 
 class VerPalpites extends React.Component {
 
-
     constructor() {
         super();
         this.state = {
             filters: {},
             selecoes: null,
-            palpites: null,
+            palpites: null
         };
     }
 
