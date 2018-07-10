@@ -263,6 +263,15 @@ class PalpiteForm extends React.Component {
         this.ocultarAjaxLoader();
     }
 
+    estiloCampo(campo) {
+        var className = "form-control "
+        if(this.state[campo]) {
+            className += this.state.mensagensValidacao[campo] ? 'is-invalid' : 'is-valid';
+        }
+
+        return className;
+    };
+
     mostrarAviso(mensagem) { this.setState({ mensagem, mensagemClassName: 'alert alert-warning', }); }
     mostrarInfo(mensagem) { this.setState({ mensagem, mensagemClassName: 'alert alert-info', }); }
     mostrarSucesso(mensagem) { this.setState({ mensagem, mensagemClassName: 'alert alert-success', }); }
@@ -284,7 +293,7 @@ class PalpiteForm extends React.Component {
                             <div className="col-sm-4">
                                 <input type="email"
                                     required
-                                    className={"form-control " + (this.state.mensagensValidacao['email'] ? 'is-invalid' : 'is-valid')}
+                                    className={this.estiloCampo('email')}
                                     name="email"
                                     label="E-mail"
                                     value={this.state.email}
@@ -295,7 +304,7 @@ class PalpiteForm extends React.Component {
                             <label className="col-sm-2 control-label" htmlFor="senha">Senha</label>
                             <div className="col-sm-4">
                                 <input type="password"
-                                    className={"form-control" + (this.state.mensagensValidacao['senha'] ? 'is-invalid' : 'is-valid')}
+                                    className={this.estiloCampo('senha')}
                                     name="senha"
                                     label="Senha"
                                     disabled={this.state.estado.campoSenhaDesabilitado}
@@ -308,7 +317,7 @@ class PalpiteForm extends React.Component {
                             <label className="col-sm-2 control-label" htmlFor="nome">Nome completo</label>
                             <div className="col-sm-10">
                                 <input type="text"
-                                    className={"form-control" + (this.state.mensagensValidacao['nome'] ? 'is-invalid' : 'is-valid')}
+                                    className={this.estiloCampo('nome')}
                                     name="nome"
                                     label="Nome"
                                     disabled={this.state.estado.camposDadosPessoaisDesabilitados}
@@ -320,7 +329,7 @@ class PalpiteForm extends React.Component {
                             <label className="col-sm-2 control-label" htmlFor="telefone">Telefone</label>
                             <div className="col-sm-4">
                                 <input type="text"
-                                    className={"form-control" + (this.state.mensagensValidacao['telefone'] ? 'is-invalid' : 'is-valid')}
+                                    className={this.estiloCampo('telefone')}
                                     name="telefone"
                                     label="Telefone"
                                     disabled={this.state.estado.camposDadosPessoaisDesabilitados}
@@ -330,7 +339,7 @@ class PalpiteForm extends React.Component {
                             <label className="col-sm-3 control-label" htmlFor="dataDeNascimento">Data de nascimento</label>
                             <div className="col-sm-3">
                                 <input type="date"
-                                    className={"form-control" + (this.state.mensagensValidacao['dataDeNascimento'] ? 'is-invalid' : 'is-valid')}
+                                    className={this.estiloCampo('dataDeNascimento')}
                                     name="dataDeNascimento"
                                     label="Data de nascimento"
                                     disabled={this.state.estado.camposDadosPessoaisDesabilitados}
@@ -359,7 +368,7 @@ class PalpiteForm extends React.Component {
                             <div className="col-sm-4">
                                 {this.state.estado.campoConfirmacaoSenhaVisivel && (
                                     <input type="password"
-                                        className="form-control"
+                                    className={this.estiloCampo('confirmarSenha')}
                                         name="confirmarSenha"
                                         label="Confirmação de senha"
                                         value={this.state.confirmarSenha}
