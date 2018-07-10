@@ -130,7 +130,6 @@ class PalpiteForm extends React.Component {
         return !temErro;
     }
 
-
     handleSenhaChanged() {
         if (!this.state.estado.eventoSenhaDesabilitado) {
             if (this.state.senha === this.state.usuarioEncontrado.senha) {
@@ -272,7 +271,8 @@ class PalpiteForm extends React.Component {
                             <label className="col-sm-2 control-label" htmlFor="email">E-mail</label>
                             <div className="col-sm-4">
                                 <input type="email"
-                                    className="form-control"
+                                    required
+                                    className={"form-control " + (this.state.mensagensValidacao['email'] ? 'is-invalid' : 'is-valid')}
                                     name="email"
                                     label="E-mail"
                                     value={this.state.email}

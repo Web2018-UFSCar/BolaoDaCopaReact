@@ -46,3 +46,15 @@ html,body{
                 50% 50% 
                 no-repeat;
   }
+
+.is-valid {
+    border: 1px;
+    border-style: solid;
+    color: #28a745
+}
+
+.is-invalid {
+    border: 1px;
+    border-style: solid;
+    color: #dc3545
+}
