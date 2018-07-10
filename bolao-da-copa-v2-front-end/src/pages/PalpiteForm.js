@@ -71,7 +71,7 @@ class PalpiteForm extends React.Component {
         });
     }
 
-    validarCampo({ nome, valor = null }) {        
+    validarCampo({ nome, valor = null }) {
         if (valor === null) {
             valor = this.state[nome];
         }
@@ -95,23 +95,23 @@ class PalpiteForm extends React.Component {
             if (valor === this.state.campeao) {
                 return 'Campeão e vice não podem ser iguais';
             }
-        } else if (nome === 'telefone'){
-	    if (valor === ''){
-	         return 'Não pode ser vazio';
-	    } else if (!/[0-9]+/.test(valor)){
-		  return 'Telefone está em formato incorreto';
-	      }
-	} else if (nome === 'nome'){
-	    if (valor === ''){
-	         return 'Não pode ser vazio';
-	    } else if (!/[aA-zZ]+/.test(valor)){
-		  return 'Nome está em formato incorreto';
-	      }
-	}
+        } else if (nome === 'telefone') {
+            if (valor === '') {
+                return 'Não pode ser vazio';
+            } else if (!/^\d+$/.test(valor)) {
+                return 'Telefone está em formato incorreto';
+            }
+        } else if (nome === 'nome') {
+            if (valor === '') {
+                return 'Não pode ser vazio';
+            } else if (!/[aA-zZ]+/.test(valor)) {
+                return 'Nome está em formato incorreto';
+            }
+        }
         else if (nome === 'dataDeNascimento' || nome === 'campeao') {
             if (valor === '') {
                 return 'Não pode ser vazio';
-            } 
+            }
         } else if (nome === 'confirmarSenha') {
             if (this.state.usuarioEncontrado === null && this.state.estado.botaoConfirmarPalpiteVisivel) {
                 const senha = this.state.senha;
@@ -127,9 +127,7 @@ class PalpiteForm extends React.Component {
     validarFormulario() {
         const mensagensValidacao = Object.assign({}, this.state.mensagensValidacao);
 
-
         let temErro = false;
-
 
         for (let campo in mensagensValidacao) {
             const msg = this.validarCampo({ nome: campo });
@@ -265,7 +263,8 @@ class PalpiteForm extends React.Component {
 
     estiloCampo(campo) {
         var className = "form-control "
-        if(this.state[campo]) {
+
+        if (this.state[campo] || this.state.mensagensValidacao[campo]) {
             className += this.state.mensagensValidacao[campo] ? 'is-invalid' : 'is-valid';
         }
 
@@ -311,7 +310,7 @@ class PalpiteForm extends React.Component {
                                     value={this.state.senha}
                                     onChange={(event) => this.handleUserInput(event)}
                                     onBlur={() => this.handleSenhaChanged()} />
-				<span className="text text-danger">{this.state.mensagensValidacao['senha']}</span>
+                                <span className="text text-danger">{this.state.mensagensValidacao['senha']}</span>
                             </div>
                         </div>
                         <div className="form-group">
@@ -324,7 +323,7 @@ class PalpiteForm extends React.Component {
                                     disabled={this.state.estado.camposDadosPessoaisDesabilitados}
                                     value={this.state.nome}
                                     onChange={(event) => this.handleUserInput(event)} />
-				<span className="text text-danger">{this.state.mensagensValidacao['nome']}</span>
+                                <span className="text text-danger">{this.state.mensagensValidacao['nome']}</span>
                             </div>
                         </div>
                         <div className="form-group">
@@ -337,7 +336,7 @@ class PalpiteForm extends React.Component {
                                     disabled={this.state.estado.camposDadosPessoaisDesabilitados}
                                     value={this.state.telefone}
                                     onChange={(event) => this.handleUserInput(event)} />
-				<span className="text text-danger">{this.state.mensagensValidacao['telefone']}</span>
+                                <span className="text text-danger">{this.state.mensagensValidacao['telefone']}</span>
                             </div>
                             <label className="col-sm-3 control-label" htmlFor="dataDeNascimento">Data de nascimento</label>
                             <div className="col-sm-3">
@@ -347,14 +346,13 @@ class PalpiteForm extends React.Component {
                                     label="Data de nascimento"
                                     disabled={this.state.estado.camposDadosPessoaisDesabilitados}
                                     value={this.state.dataDeNascimento}
-                                    onChange={(event) => this.handleUserInput(event)}>
-				<span className="text text-danger">{this.state.mensagensValidacao['dataDeNascimento']}</span>
-                                </input>
+                                    onChange={(event) => this.handleUserInput(event)} />
+                                <span className="text text-danger">{this.state.mensagensValidacao['dataDeNascimento']}</span>
                             </div>
                         </div>
 
 
-                        <div className={this.state.estado.camposDadosPalpiteDestaque ? 'form-group has-success' : 'form-group'}>
+                        <div className='form-group'>
                             <label className="col-sm-2 control-label" htmlFor="campeao">Campeão</label>
                             <div className="col-sm-4">
                                 <Select
@@ -363,16 +361,19 @@ class PalpiteForm extends React.Component {
                                     value={this.state.campeao}
                                     disabled={this.state.estado.camposDadosPalpiteDesabilitados}
                                     onChange={(event) => this.handleSelectChange('campeao', event)}
-                                    options={this.state.paises}/>
+                                    options={this.state.paises} />
+                                
+                                <span className="text text-danger">{this.state.mensagensValidacao['campeao']}</span>
+
                             </div>
 
                             {this.state.estado.campoConfirmacaoSenhaVisivel && (
-                                <label className="col-sm-2 control-label" htmlFor="confirmarSenha">Confirme a senha</label>
+                                <label className="col-sm-2 control-label text-success" htmlFor="confirmarSenha">Confirme a senha</label>
                             )}
                             <div className="col-sm-4">
                                 {this.state.estado.campoConfirmacaoSenhaVisivel && (
                                     <input type="password"
-                                    className={this.estiloCampo('confirmarSenha')}
+                                        className={this.estiloCampo('confirmarSenha')}
                                         name="confirmarSenha"
                                         label="Confirmação de senha"
                                         value={this.state.confirmarSenha}
@@ -381,7 +382,8 @@ class PalpiteForm extends React.Component {
                                 <span className="text text-danger">{this.state.mensagensValidacao['confirmarSenha']}</span>
                             </div>
                         </div>
-                        <div className={this.state.estado.camposDadosPalpiteDestaque ? 'form-group has-success' : 'form-group'}>
+
+                        <div className='form-group'>
                             <label className="col-sm-2 control-label" htmlFor="vice">Vice</label>
                             <div className="col-sm-4">
                                 <Select
@@ -390,9 +392,11 @@ class PalpiteForm extends React.Component {
                                     value={this.state.vice}
                                     disabled={this.state.estado.camposDadosPalpiteDesabilitados}
                                     onChange={(event) => this.handleSelectChange('vice', event)}
-                                    options={this.state.paises}/>
+                                    options={this.state.paises} />
+                                
+                                <span className="text text-danger">{this.state.mensagensValidacao['vice']}</span>
                             </div>
-                            
+
                             <div className="col-sm-6">
                                 {this.state.estado.botaoConfirmarPalpiteVisivel && (
                                     <a type="submit"
