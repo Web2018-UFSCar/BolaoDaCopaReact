@@ -302,6 +302,7 @@ class PalpiteForm extends React.Component {
                                     value={this.state.senha}
                                     onChange={(event) => this.handleUserInput(event)}
                                     onBlur={() => this.handleSenhaChanged()} />
+				<span className="text text-danger">{this.state.mensagensValidacao['senha']}</span>
                             </div>
                         </div>
                         <div className="form-group">
@@ -314,6 +315,7 @@ class PalpiteForm extends React.Component {
                                     disabled={this.state.estado.camposDadosPessoaisDesabilitados}
                                     value={this.state.nome}
                                     onChange={(event) => this.handleUserInput(event)} />
+				<span className="text text-danger">{this.state.mensagensValidacao['nome']}</span>
                             </div>
                         </div>
                         <div className="form-group">
@@ -326,6 +328,7 @@ class PalpiteForm extends React.Component {
                                     disabled={this.state.estado.camposDadosPessoaisDesabilitados}
                                     value={this.state.telefone}
                                     onChange={(event) => this.handleUserInput(event)} />
+				<span className="text text-danger">{this.state.mensagensValidacao['telefone']}</span>
                             </div>
                             <label className="col-sm-3 control-label" htmlFor="dataDeNascimento">Data de nascimento</label>
                             <div className="col-sm-3">
@@ -336,6 +339,7 @@ class PalpiteForm extends React.Component {
                                     disabled={this.state.estado.camposDadosPessoaisDesabilitados}
                                     value={this.state.dataDeNascimento}
                                     onChange={(event) => this.handleUserInput(event)}>
+				<span className="text text-danger">{this.state.mensagensValidacao['dataDeNascimento']}</span>
                                 </input>
                             </div>
                         </div>
