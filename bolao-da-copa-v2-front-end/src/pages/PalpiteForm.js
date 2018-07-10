@@ -95,11 +95,23 @@ class PalpiteForm extends React.Component {
             if (valor === this.state.campeao) {
                 return 'Campeão e vice não podem ser iguais';
             }
-        }
-        else if (nome === 'nome' || nome === 'telefone' || nome === 'dataDeNascimento' || nome === 'campeao') {
+        } else if (nome === 'telefone'){
+	    if (valor === ''){
+	         return 'Não pode ser vazio';
+	    } else if (!/[0-9]+/.test(valor)){
+		  return 'Telefone está em formato incorreto';
+	      }
+	} else if (nome === 'nome'){
+	    if (valor === ''){
+	         return 'Não pode ser vazio';
+	    } else if (!/[aA-zZ]+/.test(valor)){
+		  return 'Nome está em formato incorreto';
+	      }
+	}
+        else if (nome === 'dataDeNascimento' || nome === 'campeao') {
             if (valor === '') {
                 return 'Não pode ser vazio';
-            }
+            } 
         } else if (nome === 'confirmarSenha') {
             if (this.state.usuarioEncontrado === null && this.state.estado.botaoConfirmarPalpiteVisivel) {
                 const senha = this.state.senha;
@@ -283,21 +295,20 @@ class PalpiteForm extends React.Component {
                             <label className="col-sm-2 control-label" htmlFor="senha">Senha</label>
                             <div className="col-sm-4">
                                 <input type="password"
-                                    className="form-control"
+                                    className={"form-control" + (this.state.mensagensValidacao['senha'] ? 'is-invalid' : 'is-valid')}
                                     name="senha"
                                     label="Senha"
                                     disabled={this.state.estado.campoSenhaDesabilitado}
                                     value={this.state.senha}
                                     onChange={(event) => this.handleUserInput(event)}
                                     onBlur={() => this.handleSenhaChanged()} />
-                                <span className="text text-danger">{this.state.mensagensValidacao['senha']}</span>
                             </div>
                         </div>
                         <div className="form-group">
                             <label className="col-sm-2 control-label" htmlFor="nome">Nome completo</label>
                             <div className="col-sm-10">
                                 <input type="text"
-                                    className="form-control"
+                                    className={"form-control" + (this.state.mensagensValidacao['nome'] ? 'is-invalid' : 'is-valid')}
                                     name="nome"
                                     label="Nome"
                                     disabled={this.state.estado.camposDadosPessoaisDesabilitados}
@@ -309,7 +320,7 @@ class PalpiteForm extends React.Component {
                             <label className="col-sm-2 control-label" htmlFor="telefone">Telefone</label>
                             <div className="col-sm-4">
                                 <input type="text"
-                                    className="form-control"
+                                    className={"form-control" + (this.state.mensagensValidacao['telefone'] ? 'is-invalid' : 'is-valid')}
                                     name="telefone"
                                     label="Telefone"
                                     disabled={this.state.estado.camposDadosPessoaisDesabilitados}
@@ -319,7 +330,7 @@ class PalpiteForm extends React.Component {
                             <label className="col-sm-3 control-label" htmlFor="dataDeNascimento">Data de nascimento</label>
                             <div className="col-sm-3">
                                 <input type="date"
-                                    className="form-control"
+                                    className={"form-control" + (this.state.mensagensValidacao['dataDeNascimento'] ? 'is-invalid' : 'is-valid')}
                                     name="dataDeNascimento"
                                     label="Data de nascimento"
                                     disabled={this.state.estado.camposDadosPessoaisDesabilitados}
